@@ -3,19 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using Pokedex.Core.DTOs;
 using Pokedex.Core.Entities;
 using Pokedex.Core.Interface;
+using Pokedex.Infraestructure.Repositories;
 
 namespace Pokedex.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PokemonController : Controller
+    public class SpeciesController : Controller
     {
-        private IPokemonRepository _pokemonRepository;
+        private ISpeciesRepository _speciesRepository;
         private readonly IMapper _mapper;
 
-        public PokemonController(IPokemonRepository pokemonRepository, IMapper mapper)
+        public SpeciesController(ISpeciesRepository speciesRepository, IMapper mapper)
         {
-            _pokemonRepository = pokemonRepository;
+            _speciesRepository = speciesRepository;
             _mapper = mapper;
         }
 
@@ -24,9 +25,9 @@ namespace Pokedex.Api.Controllers
         {
             try
             {
-                var Pokemon = await _pokemonRepository.All();
-                var PokemonDto = _mapper.Map<IEnumerable<PokemonDto>>(Pokemon);
-                return Ok(PokemonDto);
+                var species = await _speciesRepository.All();
+                var speciesDto = _mapper.Map<IEnumerable<SpeciesDto>>(species);
+                return Ok(speciesDto);
             }
             catch (Exception ex)
             {
@@ -39,9 +40,9 @@ namespace Pokedex.Api.Controllers
         {
             try
             {
-                var pokemon = await _pokemonRepository.Get(id);
-                var pokemonDto = _mapper.Map<PokemonDto>(pokemon);
-                return Ok(pokemonDto);
+                var specie = await _speciesRepository.Get(id);
+                var specieDto = _mapper.Map<SpeciesDto>(specie);
+                return Ok(specieDto);
             }
             catch (Exception ex)
             {
@@ -50,13 +51,13 @@ namespace Pokedex.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insert(PokemonDto newPokemon)
+        public async Task<IActionResult> Insert(SpeciesDto newspecie)
         {
             try
             {
-                var pokemon = _mapper.Map<Pokemon>(newPokemon);
-                await _pokemonRepository.Insert(pokemon);
-                return Ok(pokemon);
+                var specie = _mapper.Map<Species>(newspecie);
+                await _speciesRepository.Insert(specie);
+                return Ok(specie);
             }
             catch (Exception ex)
             {
@@ -65,13 +66,13 @@ namespace Pokedex.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(PokemonDto updatePokemon)
+        public async Task<IActionResult> Update(SpeciesDto updatespecie)
         {
             try
             {
-                var pokemon = _mapper.Map<Pokemon>(updatePokemon);
-                await _pokemonRepository.Update(pokemon);
-                return Ok(pokemon);
+                var specie = _mapper.Map<Species>(updatespecie);
+                await _speciesRepository.Update(specie);
+                return Ok(specie);
             }
             catch (Exception ex)
             {
@@ -84,10 +85,10 @@ namespace Pokedex.Api.Controllers
         {
             try
             {
-                var pokemon = await _pokemonRepository.Get(id);
-                var deletePokemon = await _pokemonRepository.Delete(id);
-                if (deletePokemon)
-                    return Ok($"El Pokemon {pokemon.Name} fue eliminado correctamente");
+                var specie = await _speciesRepository.Get(id);
+                var deletespecie = await _speciesRepository.Delete(id);
+                if (deletespecie)
+                    return Ok($"La Especie {specie.Name} fue eliminado correctamente");
                 else
                     return StatusCode(500, $"Operación no procesada o el GUID '{id}' no existe.");
             }

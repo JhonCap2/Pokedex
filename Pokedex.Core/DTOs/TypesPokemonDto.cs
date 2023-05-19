@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pokedex.Core.DTOs
 {
-    public class TypePokemonDto
+    public class TypesPokemonDto
     {
         public int IdPokemon { get; set; }
         public int IdType { get; set; }

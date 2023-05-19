@@ -7,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddTransient<IPokemonRepository, PokemonRepository>();
-//builder.Services.AddTransient<ITypeOfTableRepository, TypeOfTableRepository>();
-//builder.Services.AddTransient<IStatsPokemonRepository, StatsPokemonRepository>();
-//builder.Services.AddTransient<IPokemonRelationShipRepository, PokemonRelationShipRepository>();
+builder.Services.AddTransient<ISpeciesRepository, SpeciesRepository>();
+builder.Services.AddTransient<IStatsRepository, StatsRepository>();
+builder.Services.AddTransient<ITypesRepository, TypeRepository>();
 
 // Add services to the container.
 
@@ -25,6 +25,9 @@ builder.Services.AddCors(options =>
         policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
 });
+
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
