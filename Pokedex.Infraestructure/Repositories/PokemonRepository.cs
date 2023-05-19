@@ -20,8 +20,8 @@ namespace Pokedex.Infraestructure.Repositories
         }
         public async Task<List<Pokemon>> All()
         {
-            var viewRelationShips = await _context.Pokemon.ToListAsync();
-            return viewRelationShips;
+            var vpokemon = await _context.Pokemon.ToListAsync();
+            return vpokemon;
         }
 
         public async Task<bool> Delete(int id)
