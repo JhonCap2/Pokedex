@@ -20,7 +20,7 @@ namespace Pokedex.Infraestructure.Repositories
         }
         public async Task<List<Pokemon>> All()
         {
-            var vpokemon = await _context.Pokemon.ToListAsync();
+            var vpokemon = await _context.Pokemon.Include(x => x.TypesPokemons).ThenInclude(x => x.Types).Include(s => s.Species).ToListAsync();
             return vpokemon;
         }
 

@@ -13,6 +13,6 @@ namespace Pokedex.Core.Entities
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         [JsonIgnore]
-        public virtual Pokemon? Pokemon { get; set; }
+        public virtual List<Pokemon>? Pokemon { get; set; }
     }
 }

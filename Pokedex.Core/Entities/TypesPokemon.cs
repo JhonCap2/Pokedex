@@ -10,13 +10,11 @@ namespace Pokedex.Core.Entities
 {
     public partial class TypesPokemon
     {
-        public int IdPokemon { get; set; }
-        public int IdType { get; set; }
+        public int PokemonId { get; set; }
+        public int TypesId { get; set; }
         [JsonIgnore]
-        [NotMapped]
         public Pokemon? Pokemon { get; set; }
         [JsonIgnore]
-        [NotMapped]
         public Types? Types { get; set; }
     }
 }

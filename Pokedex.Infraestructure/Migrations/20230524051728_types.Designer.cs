@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pokedex.Infraestructure.Data;
 
@@ -11,9 +12,11 @@ using Pokedex.Infraestructure.Data;
 namespace Pokedex.Infraestructure.Migrations
 {
     [DbContext(typeof(DbPokedexContext))]
-    partial class DbPokedexContextModelSnapshot : ModelSnapshot
+    [Migration("20230524051728_types")]
+    partial class types
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +61,9 @@ namespace Pokedex.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SpeciesId");
+                    b.HasIndex("SpeciesId")
+                        .IsUnique()
+                        .HasFilter("[SpeciesId] IS NOT NULL");
 
                     b.ToTable("Pokemon");
                 });
@@ -136,13 +141,16 @@ namespace Pokedex.Infraestructure.Migrations
 
             modelBuilder.Entity("Pokedex.Core.Entities.TypesPokemon", b =>
                 {
-                    b.Property<int>("TypesId")
+                    b.Property<int>("IdType")
                         .HasColumnType("int");
 
-                    b.Property<int>("PokemonId")
+                    b.Property<int>("IdPokemon")
                         .HasColumnType("int");
 
-                    b.HasKey("TypesId", "PokemonId");
+                    b.Property<int?>("PokemonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdType", "IdPokemon");
 
                     b.HasIndex("PokemonId");
 
@@ -152,8 +160,8 @@ namespace Pokedex.Infraestructure.Migrations
             modelBuilder.Entity("Pokedex.Core.Entities.Pokemon", b =>
                 {
                     b.HasOne("Pokedex.Core.Entities.Species", "Species")
-                        .WithMany("Pokemon")
-                        .HasForeignKey("SpeciesId");
+                        .WithOne("Pokemon")
+                        .HasForeignKey("Pokedex.Core.Entities.Pokemon", "SpeciesId");
 
                     b.Navigation("Species");
                 });
@@ -171,21 +179,9 @@ namespace Pokedex.Infraestructure.Migrations
 
             modelBuilder.Entity("Pokedex.Core.Entities.TypesPokemon", b =>
                 {
-                    b.HasOne("Pokedex.Core.Entities.Pokemon", "Pokemon")
+                    b.HasOne("Pokedex.Core.Entities.Pokemon", null)
                         .WithMany("TypesPokemons")
-                        .HasForeignKey("PokemonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Pokedex.Core.Entities.Types", "Types")
-                        .WithMany()
-                        .HasForeignKey("TypesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pokemon");
-
-                    b.Navigation("Types");
+                        .HasForeignKey("PokemonId");
                 });
 
             modelBuilder.Entity("Pokedex.Core.Entities.Pokemon", b =>

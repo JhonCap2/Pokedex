@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -21,6 +22,7 @@ namespace Pokedex.Core.Entities
         public int? SpeciesId { get; set; }
         public virtual List<TypesPokemon>? TypesPokemons { get; set; }
         public virtual Stats? Stats { get; set; }
+        [JsonIgnore]
         public virtual Species? Species { get; set; }
     }
 

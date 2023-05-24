@@ -10,23 +10,49 @@ namespace Pokedex.Api.Controllers
     [ApiController]
     public class PokemonController : Controller
     {
-        private IPokemonRepository _pokemonRepository;
+        private readonly IPokemonRepository _pokemonRepository;
+        private readonly ITypesRepository _typesRepository;
         private readonly IMapper _mapper;
 
-        public PokemonController(IPokemonRepository pokemonRepository, IMapper mapper)
+        public PokemonController(IPokemonRepository pokemonRepository, ITypesRepository typesRepository , IMapper mapper)
         {
             _pokemonRepository = pokemonRepository;
+            _typesRepository = typesRepository;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<ActionResult<List<VisualisePokemonDTO>>> All()
         {
+            List<VisualisePokemonDTO> modelDTO = new();
             try
             {
                 var Pokemon = await _pokemonRepository.All();
-                var PokemonDto = _mapper.Map<IEnumerable<PokemonDto>>(Pokemon);
-                return Ok(PokemonDto);
+                var Types = await _typesRepository.All();
+
+                foreach (var pokemon in Pokemon)
+                {
+                    var typesNames = new List<string>();
+
+                    foreach (var typesPokemon in pokemon?.TypesPokemons)
+                    {
+                        if (typesPokemon.PokemonId == pokemon.Id && typesPokemon.Types != null)
+                        {
+                            typesNames.Add(typesPokemon.Types.Name);
+                        }
+                    }
+
+                    modelDTO.Add(new VisualisePokemonDTO
+                    {
+                        Id = pokemon.Id,
+                        Image = pokemon.Image,
+                        Name = pokemon.Name,
+                        Pokemon_Number = pokemon.Pokemon_Number,
+                        TypesPokemons = typesNames
+                    });
+                }
+
+                return modelDTO;
             }
             catch (Exception ex)
             {
@@ -56,7 +82,7 @@ namespace Pokedex.Api.Controllers
             {
                 var pokemon = _mapper.Map<Pokemon>(newPokemon);
                 await _pokemonRepository.Insert(pokemon);
-                return Ok(pokemon);
+                return Ok($"Pokemon {pokemon.Name} creado con exito");
             }
             catch (Exception ex)
             {

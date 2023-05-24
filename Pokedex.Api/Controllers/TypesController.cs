@@ -8,12 +8,12 @@ namespace Pokedex.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TypeController : Controller
+    public class TypesController : Controller
     {
         private ITypesRepository _typesRepository;
         private readonly IMapper _mapper;
 
-        public TypeController(ITypesRepository typesRepository, IMapper mapper)
+        public TypesController(ITypesRepository typesRepository, IMapper mapper)
         {
             _typesRepository = typesRepository;
             _mapper = mapper;
@@ -25,7 +25,7 @@ namespace Pokedex.Api.Controllers
             try
             {
                 var types = await _typesRepository.All();
-                var typesDto = _mapper.Map<IEnumerable<Types>>(types);
+                var typesDto = _mapper.Map<IEnumerable<TypeDto>>(types);
                 return Ok(typesDto);
             }
             catch (Exception ex)

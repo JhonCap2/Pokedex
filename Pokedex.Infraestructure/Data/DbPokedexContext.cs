@@ -30,8 +30,8 @@ namespace Pokedex.Infraestructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Stats>().HasOne(x => x.Pokemon).WithOne(x => x.Stats);
-            builder.Entity<TypesPokemon>().HasKey(x => new { x.IdType, x.IdPokemon});
-            builder.Entity<Species>().HasOne(x => x.Pokemon).WithOne(x=>x.Species);
+            builder.Entity<TypesPokemon>().HasKey(x => new { x.TypesId, x.PokemonId});
+            builder.Entity<Species>().HasMany(x => x.Pokemon).WithOne(x=>x.Species).HasForeignKey(x => x.SpeciesId);
         }
 
     }
