@@ -5,13 +5,13 @@ using Pokedex.Infraestructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Add services.
 builder.Services.AddTransient<IPokemonRepository, PokemonRepository>();
 builder.Services.AddTransient<ISpeciesRepository, SpeciesRepository>();
 builder.Services.AddTransient<IStatsRepository, StatsRepository>();
 builder.Services.AddTransient<ITypesRepository, TypeRepository>();
 
-// Add services to the container.
+
 
 builder.Services.AddDbContext<DbPokedexContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Pokedex"))

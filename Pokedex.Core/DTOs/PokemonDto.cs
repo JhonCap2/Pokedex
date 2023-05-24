@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pokedex.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,9 @@ namespace Pokedex.Core.DTOs
         public string Description { get; set; } = string.Empty;
         public string Heigth { get; set; } = string.Empty;
         public string Weight { get; set; } = string.Empty;
-        public int SpeciesId { get; set; }
+        public int? SpeciesId { get; set; }
+        public virtual List<TypesPokemon>? TypesPokemons { get; set; }
+        public virtual Stats? Stats { get; set; }
+        public virtual Species? Species { get; set; }
     }
 }
