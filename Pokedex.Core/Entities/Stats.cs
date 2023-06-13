@@ -19,6 +19,7 @@ namespace Pokedex.Core.Entities
         public int Special_Defense { get; set; }
         public int Speed { get; set; }
         [ForeignKey("PokemonId")]
+        [JsonIgnore]
         public int PokemonId { get; set; }
         [JsonIgnore]
         public virtual Pokemon? Pokemon { get; set; }

@@ -22,12 +22,12 @@ namespace Pokedex.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<VisualisePokemonDTO>>> All()
+        public async Task<ActionResult<List<VisualisePokemonsDTO>>> All()
         {
             var Pokemon = await _pokemonRepository.All();
             var Types = await _typesRepository.All();
 
-            List<VisualisePokemonDTO> modelDTO = new();
+            List<VisualisePokemonsDTO> modelDTO = new();
 
             try
             {
@@ -43,7 +43,7 @@ namespace Pokedex.Api.Controllers
                         }
                     }
 
-                    modelDTO.Add(new VisualisePokemonDTO
+                    modelDTO.Add(new VisualisePokemonsDTO
                     {
                         Id = pokemon.Id,
                         Image = pokemon.Image,
@@ -64,11 +64,38 @@ namespace Pokedex.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
+            var Pokemon = await _pokemonRepository.Get(id);
             try
             {
-                var pokemon = await _pokemonRepository.Get(id);
-                var pokemonDto = _mapper.Map<PokemonDto>(pokemon);
-                return Ok(pokemonDto);
+                
+                
+                    var typesNames = new List<string>();
+
+                    foreach (var typesPokemon in Pokemon?.TypesPokemons)
+                    {
+                        if (typesPokemon.PokemonId == Pokemon.Id && typesPokemon.Types != null)
+                        {
+                            typesNames.Add(typesPokemon.Types.Name);
+                        }
+                    }
+                
+
+                VisualisePokemonDTO modelDTO = new()
+                {
+                        Id = Pokemon.Id,
+                        Image = Pokemon.Image,
+                        Name = Pokemon.Name,
+                        Description = Pokemon.Description,
+                        Weight = Pokemon.Weight,
+                        Height = Pokemon.Heigth,
+                        Pokemon_Number = Pokemon.Pokemon_Number,
+                        Specie = Pokemon.Species.Name,
+                        TypesPokemons = typesNames,
+                        Stats = Pokemon.Stats
+                    };
+                
+
+                return Ok(modelDTO);
             }
             catch (Exception ex)
             {

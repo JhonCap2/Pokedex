@@ -20,7 +20,6 @@ namespace Pokedex.Core.DTOs
         public int? SpeciesId { get; set; }
         public virtual List<TypesPokemon>? TypesPokemons { get; set; }
         public virtual Stats? Stats { get; set; }
-        [JsonIgnore]
         public virtual Species? Species { get; set; }
     }
 }

@@ -35,7 +35,11 @@ namespace Pokedex.Infraestructure.Repositories
 
         public async Task<Pokemon> Get(int id)
         {
-            var vpokemon = await _context.Pokemon.Include(x => x.TypesPokemons).ThenInclude(x => x.Types).AsNoTracking().SingleOrDefaultAsync(x => x.Id == id); //solucion para que traiga los tipos del pokemon
+            var vpokemon = await _context.Pokemon.Include(x => x.TypesPokemons)
+                                                 .ThenInclude(x => x.Types)
+                                                 .Include(s => s.Species)
+                                                 .Include(t => t.Stats)
+                                                 .AsNoTracking().SingleOrDefaultAsync(x => x.Id == id); //solucion para que traiga los tipos del pokemon
             return vpokemon;
         }
 
