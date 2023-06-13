@@ -24,12 +24,13 @@ namespace Pokedex.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<VisualisePokemonDTO>>> All()
         {
+            var Pokemon = await _pokemonRepository.All();
+            var Types = await _typesRepository.All();
+
             List<VisualisePokemonDTO> modelDTO = new();
+
             try
             {
-                var Pokemon = await _pokemonRepository.All();
-                var Types = await _typesRepository.All();
-
                 foreach (var pokemon in Pokemon)
                 {
                     var typesNames = new List<string>();

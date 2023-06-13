@@ -5,6 +5,7 @@ using Pokedex.Infraestructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,7 +35,7 @@ namespace Pokedex.Infraestructure.Repositories
 
         public async Task<Pokemon> Get(int id)
         {
-            var vpokemon = await _context.Pokemon.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+            var vpokemon = await _context.Pokemon.Include(x => x.TypesPokemons).ThenInclude(x => x.Types).AsNoTracking().SingleOrDefaultAsync(x => x.Id == id); //solucion para que traiga los tipos del pokemon
             return vpokemon;
         }
 
