@@ -65,35 +65,37 @@ namespace Pokedex.Api.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var Pokemon = await _pokemonRepository.Get(id);
+
+            if (Pokemon == null)
+            {
+                return NotFound();
+            }
+
             try
             {
-                
-                
-                    var typesNames = new List<string>();
+                var typesNames = new List<string>();
 
-                    foreach (var typesPokemon in Pokemon?.TypesPokemons)
+                foreach (var typesPokemon in Pokemon?.TypesPokemons)
+                {
+                    if (typesPokemon.PokemonId == Pokemon.Id && typesPokemon.Types != null)
                     {
-                        if (typesPokemon.PokemonId == Pokemon.Id && typesPokemon.Types != null)
-                        {
-                            typesNames.Add(typesPokemon.Types.Name);
-                        }
+                        typesNames.Add(typesPokemon.Types.Name);
                     }
-                
+                }
 
                 VisualisePokemonDTO modelDTO = new()
                 {
-                        Id = Pokemon.Id,
-                        Image = Pokemon.Image,
-                        Name = Pokemon.Name,
-                        Description = Pokemon.Description,
-                        Weight = Pokemon.Weight,
-                        Height = Pokemon.Heigth,
-                        Pokemon_Number = Pokemon.Pokemon_Number,
-                        Specie = Pokemon.Species.Name,
-                        TypesPokemons = typesNames,
-                        Stats = Pokemon.Stats
-                    };
-                
+                    Id = Pokemon.Id,
+                    Image = Pokemon.Image,
+                    Name = Pokemon.Name,
+                    Description = Pokemon.Description,
+                    Weight = Pokemon.Weight,
+                    Height = Pokemon.Heigth,
+                    Pokemon_Number = Pokemon.Pokemon_Number,
+                    Specie = Pokemon.Species.Name,
+                    TypesPokemons = typesNames,
+                    Stats = Pokemon.Stats
+                };
 
                 return Ok(modelDTO);
             }

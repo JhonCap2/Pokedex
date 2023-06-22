@@ -39,7 +39,7 @@ namespace Pokedex.Infraestructure.Repositories
                                                  .ThenInclude(x => x.Types)
                                                  .Include(s => s.Species)
                                                  .Include(t => t.Stats)
-                                                 .AsNoTracking().SingleOrDefaultAsync(x => x.Id == id); //solucion para que traiga los tipos del pokemon
+                                                 .AsNoTracking().SingleOrDefaultAsync(x => x.Pokemon_Number == id); //solucion para que traiga los tipos del pokemon
             return vpokemon;
         }
 

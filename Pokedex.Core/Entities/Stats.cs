@@ -11,6 +11,7 @@ namespace Pokedex.Core.Entities
 {
     public partial class Stats
     {
+        [JsonIgnore]
         public int Id { get; set; }
         public int HP { get; set; }
         public int Attack { get; set; }
