@@ -61,6 +61,47 @@ namespace Pokedex.Api.Controllers
             }
         }
 
+        [HttpGet("Type")]
+        public async Task<IActionResult> PokemonByType([FromQuery] string type)
+        {
+            var Pokemon = await _pokemonRepository.GetPokemonByType(type);
+
+
+            List<VisualisePokemonsDTO> modelDTO = new();
+
+
+            try
+            {
+                foreach (var pokemon in Pokemon)
+                {
+                    var typesNames = new List<string>();
+
+                    foreach (var typesPokemon in pokemon?.TypesPokemons)
+                    {
+                        if (typesPokemon.PokemonId == pokemon.Id && typesPokemon.Types != null)
+                        {
+                            typesNames.Add(typesPokemon.Types.Name);
+                        }
+                    }
+
+                    modelDTO.Add(new VisualisePokemonsDTO
+                    {
+                        Id = pokemon.Id,
+                        Image = pokemon.Image,
+                        Name = pokemon.Name,
+                        Pokemon_Number = pokemon.Pokemon_Number,
+                        TypesPokemons = typesNames
+                    });
+                }
+
+                return Ok(modelDTO);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

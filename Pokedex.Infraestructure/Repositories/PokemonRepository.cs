@@ -43,6 +43,13 @@ namespace Pokedex.Infraestructure.Repositories
             return vpokemon;
         }
 
+        public async Task<List<Pokemon>> GetPokemonByType(string type)
+        {
+            var pokemon = await _context.Pokemon.Include(x => x.TypesPokemons).ThenInclude(x => x.Types)
+                                                .Where(x => x.TypesPokemons.Select(x => x.Types.Name).FirstOrDefault() == type).AsNoTracking().ToListAsync();
+            return pokemon;
+        }
+
         public async Task Insert(Pokemon newPokemon)
         {
             await _context.Pokemon.AddAsync(newPokemon);

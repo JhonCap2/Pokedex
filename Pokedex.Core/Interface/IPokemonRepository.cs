@@ -11,6 +11,7 @@ namespace Pokedex.Core.Interface
     {
         Task<List<Pokemon>> All();
         Task<Pokemon> Get(int id);
+        Task<List<Pokemon>> GetPokemonByType (string type);
         Task Insert(Pokemon newPokemon);
         Task<bool> Update(Pokemon upPokemon);
         Task<bool> Delete(int id);
