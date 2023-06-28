@@ -53,7 +53,7 @@ namespace Pokedex.Infraestructure.Repositories
         public async Task Insert(Pokemon newPokemon)
         {
             await _context.Pokemon.AddAsync(newPokemon);
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
 
         public async Task<bool> Update(Pokemon upPokemon)

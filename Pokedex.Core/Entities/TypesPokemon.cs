@@ -12,6 +12,7 @@ namespace Pokedex.Core.Entities
     {
         public int PokemonId { get; set; }
         public int TypesId { get; set; }
+        public int? Order { get; set; }
         [JsonIgnore]
         public Pokemon? Pokemon { get; set; }
         [JsonIgnore]

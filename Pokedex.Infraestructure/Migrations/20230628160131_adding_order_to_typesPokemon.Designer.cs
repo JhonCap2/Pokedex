@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pokedex.Infraestructure.Data;
 
@@ -11,9 +12,11 @@ using Pokedex.Infraestructure.Data;
 namespace Pokedex.Infraestructure.Migrations
 {
     [DbContext(typeof(DbPokedexContext))]
-    partial class DbPokedexContextModelSnapshot : ModelSnapshot
+    [Migration("20230628160131_adding_order_to_typesPokemon")]
+    partial class adding_order_to_typesPokemon
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +145,7 @@ namespace Pokedex.Infraestructure.Migrations
                     b.Property<int>("PokemonId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Order")
+                    b.Property<int>("Order")
                         .HasColumnType("int");
 
                     b.HasKey("TypesId", "PokemonId");

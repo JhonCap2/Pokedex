@@ -35,7 +35,7 @@ namespace Pokedex.Api.Controllers
                 {
                     var typesNames = new List<string>();
 
-                    foreach (var typesPokemon in pokemon?.TypesPokemons)
+                    foreach (var typesPokemon in pokemon?.TypesPokemons.OrderBy(x => x.Order))
                     {
                         if (typesPokemon.PokemonId == pokemon.Id && typesPokemon.Types != null)
                         {
@@ -116,7 +116,7 @@ namespace Pokedex.Api.Controllers
             {
                 var typesNames = new List<string>();
 
-                foreach (var typesPokemon in Pokemon?.TypesPokemons)
+                foreach (var typesPokemon in Pokemon?.TypesPokemons.OrderBy(x => x.Order))
                 {
                     if (typesPokemon.PokemonId == Pokemon.Id && typesPokemon.Types != null)
                     {
@@ -152,6 +152,14 @@ namespace Pokedex.Api.Controllers
             try
             {
                 var pokemon = _mapper.Map<Pokemon>(newPokemon);
+
+                if (pokemon.TypesPokemons != null)
+                {
+                    for (int i = 0; i < newPokemon.TypesPokemons.Count; i++)
+                    {
+                        pokemon.TypesPokemons[i].Order = i;
+                    }
+                }
                 await _pokemonRepository.Insert(pokemon);
                 return Ok($"Pokemon {pokemon.Name} creado con exito");
             }
