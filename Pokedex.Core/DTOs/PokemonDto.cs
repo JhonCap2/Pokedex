@@ -17,9 +17,12 @@ namespace Pokedex.Core.DTOs
         public string Description { get; set; } = string.Empty;
         public string Heigth { get; set; } = string.Empty;
         public string Weight { get; set; } = string.Empty;
-        public int? SpeciesId { get; set; }
+        public int SpeciesId { get; set; }
+        public int EvolutionFamilyId { get; set; }
+        public int OrderEvolution { get; set; }
         public virtual List<TypesPokemon>? TypesPokemons { get; set; }
         public virtual Stats? Stats { get; set; }
         public virtual Species? Species { get; set; }
+        public virtual Evolutions? EvolutionFamily { get; set; }
     }
 }

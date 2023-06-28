@@ -12,13 +12,11 @@ namespace Pokedex.Infraestructure.Data
     {
 
         public DbPokedexContext()
-        {
-            
+        { 
         }
 
         public DbPokedexContext(DbContextOptions<DbPokedexContext> options) : base(options)
         {
-            
         }
 
         public  DbSet<Pokemon> Pokemon { get; set; }
@@ -26,12 +24,14 @@ namespace Pokedex.Infraestructure.Data
         public  DbSet<Stats> Stats { get; set; }
         public  DbSet<TypesPokemon> TypesPokemon { get; set; }
         public DbSet<Species> Species { get; set; }
+        public DbSet<Evolutions> Evolutions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Stats>().HasOne(x => x.Pokemon).WithOne(x => x.Stats);
             builder.Entity<TypesPokemon>().HasKey(x => new { x.TypesId, x.PokemonId});
             builder.Entity<Species>().HasMany(x => x.Pokemon).WithOne(x=>x.Species).HasForeignKey(x => x.SpeciesId);
+            builder.Entity<Evolutions>().HasMany(x => x.Pokemon).WithOne(x => x.EvolutionFamily);
         }
 
     }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pokedex.Infraestructure.Data;
 
@@ -11,9 +12,11 @@ using Pokedex.Infraestructure.Data;
 namespace Pokedex.Infraestructure.Migrations
 {
     [DbContext(typeof(DbPokedexContext))]
-    partial class DbPokedexContextModelSnapshot : ModelSnapshot
+    [Migration("20230628220407_adding_evolutionFamily")]
+    partial class adding_evolutionFamily
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,6 +42,9 @@ namespace Pokedex.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PokemonId")
+                        .IsUnique();
+
                     b.ToTable("Evolutions");
                 });
 
@@ -54,9 +60,6 @@ namespace Pokedex.Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EvolutionFamilyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Heigth")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -69,9 +72,6 @@ namespace Pokedex.Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrderEvolution")
-                        .HasColumnType("int");
-
                     b.Property<int>("Pokemon_Number")
                         .HasColumnType("int");
 
@@ -83,8 +83,6 @@ namespace Pokedex.Infraestructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EvolutionFamilyId");
 
                     b.HasIndex("SpeciesId");
 
@@ -180,17 +178,22 @@ namespace Pokedex.Infraestructure.Migrations
                     b.ToTable("TypesPokemon");
                 });
 
+            modelBuilder.Entity("Pokedex.Core.Entities.Evolutions", b =>
+                {
+                    b.HasOne("Pokedex.Core.Entities.Pokemon", "Pokemon")
+                        .WithOne("EvolutionFamily")
+                        .HasForeignKey("Pokedex.Core.Entities.Evolutions", "PokemonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pokemon");
+                });
+
             modelBuilder.Entity("Pokedex.Core.Entities.Pokemon", b =>
                 {
-                    b.HasOne("Pokedex.Core.Entities.Evolutions", "EvolutionFamily")
-                        .WithMany("Pokemon")
-                        .HasForeignKey("EvolutionFamilyId");
-
                     b.HasOne("Pokedex.Core.Entities.Species", "Species")
                         .WithMany("Pokemon")
                         .HasForeignKey("SpeciesId");
-
-                    b.Navigation("EvolutionFamily");
 
                     b.Navigation("Species");
                 });
@@ -225,13 +228,10 @@ namespace Pokedex.Infraestructure.Migrations
                     b.Navigation("Types");
                 });
 
-            modelBuilder.Entity("Pokedex.Core.Entities.Evolutions", b =>
-                {
-                    b.Navigation("Pokemon");
-                });
-
             modelBuilder.Entity("Pokedex.Core.Entities.Pokemon", b =>
                 {
+                    b.Navigation("EvolutionFamily");
+
                     b.Navigation("Stats");
 
                     b.Navigation("TypesPokemons");

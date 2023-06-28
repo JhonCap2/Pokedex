@@ -16,9 +16,7 @@ namespace Pokedex.Core.DTOs
         public string Description { get; set; } = string.Empty;
         public string Height { get; set; } = string.Empty;
         public string Weight { get; set; } = string.Empty;
-
         public string Image { get; set; } = string.Empty;
-        
         public List<string>? TypesPokemons { get; set; }
         public string Specie { get; set; } = string.Empty;
         public Stats? Stats { get; set; }
