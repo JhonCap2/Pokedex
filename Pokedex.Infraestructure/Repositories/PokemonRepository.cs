@@ -2,12 +2,6 @@
 using Pokedex.Core.Entities;
 using Pokedex.Core.Interface;
 using Pokedex.Infraestructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pokedex.Infraestructure.Repositories
 {
@@ -23,6 +17,12 @@ namespace Pokedex.Infraestructure.Repositories
         {
             var vpokemon = await _context.Pokemon.Include(x => x.TypesPokemons).ThenInclude(x => x.Types).Include(s => s.Species).ToListAsync();
             return vpokemon;
+        }
+
+        public async Task<List<Pokemon>> GetPokemonEvolutions(int EvolutionFamily)
+        {
+            var pokemon = await _context.Pokemon.Include(x => x.TypesPokemons).ThenInclude(x => x.Types).Include(s => s.Species).Where(x => x.EvolutionFamilyId == EvolutionFamily).OrderBy(x => x.OrderEvolution).ToListAsync();
+            return pokemon;
         }
 
         public async Task<bool> Delete(int id)

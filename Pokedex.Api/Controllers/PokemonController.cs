@@ -106,6 +106,7 @@ namespace Pokedex.Api.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var Pokemon = await _pokemonRepository.Get(id);
+            var Evolutions = await _pokemonRepository.GetPokemonEvolutions((int)Pokemon.EvolutionFamilyId);
 
             if (Pokemon == null)
             {
@@ -124,6 +125,28 @@ namespace Pokedex.Api.Controllers
                     }
                 }
 
+                List<PokemonDto> PokemonEvolution = new();
+
+                foreach (var evolution in Evolutions)
+                {
+                    var EvolutionTypes = new List<string>();
+
+                    foreach (var type in evolution.TypesPokemons.OrderBy(x => x.Order))
+                    {
+                        EvolutionTypes.Add(type.Types.Name);
+                    }
+
+                    PokemonEvolution.Add(new PokemonDto
+                    {
+                        Name = evolution.Name,
+                        Pokemon_Number = evolution.Pokemon_Number,
+                        Image = evolution.Image,
+                        EvolutionFamilyId = (int)evolution.EvolutionFamilyId,
+                        OrderEvolution = (int)evolution.OrderEvolution,
+                        TypesPokemons = EvolutionTypes
+                    });
+                }
+
                 VisualisePokemonDTO modelDTO = new()
                 {
                     Id = Pokemon.Id,
@@ -135,7 +158,8 @@ namespace Pokedex.Api.Controllers
                     Pokemon_Number = Pokemon.Pokemon_Number,
                     Specie = Pokemon.Species.Name,
                     TypesPokemons = typesNames,
-                    Stats = Pokemon.Stats
+                    Stats = Pokemon.Stats,
+                    PokemonEvolutions = PokemonEvolution
                 };
 
                 return Ok(modelDTO);

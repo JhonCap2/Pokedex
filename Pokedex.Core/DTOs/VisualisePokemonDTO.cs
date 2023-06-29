@@ -20,5 +20,6 @@ namespace Pokedex.Core.DTOs
         public List<string>? TypesPokemons { get; set; }
         public string Specie { get; set; } = string.Empty;
         public Stats? Stats { get; set; }
+        public List<PokemonDto>? PokemonEvolutions { get; set; }
     }
 }

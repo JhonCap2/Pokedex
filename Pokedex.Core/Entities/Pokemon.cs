@@ -26,6 +26,7 @@ namespace Pokedex.Core.Entities
         public virtual Stats? Stats { get; set; }
         [JsonIgnore]
         public virtual Species? Species { get; set; }
+        [JsonIgnore]
         public virtual Evolutions? EvolutionFamily { get; set; }
     }
 
